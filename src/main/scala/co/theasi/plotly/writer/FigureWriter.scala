@@ -275,6 +275,7 @@ object FigureWriter {
       // The casts are really ugly. There must be a better way
       writeInfo = series match {
         case s: Scatter[_, _] => ScatterWriteInfo(srcs, plotIndex, s.options)
+        case s: Bar[_, _] => BarWriteInfo(srcs, plotIndex, s.options)
         case s: SurfaceZ[_] => SurfaceZWriteInfo(srcs, plotIndex, s.options)
         case s: SurfaceXYZ[_, _, _] => SurfaceXYZWriteInfo(srcs, plotIndex, s.options)
       }
