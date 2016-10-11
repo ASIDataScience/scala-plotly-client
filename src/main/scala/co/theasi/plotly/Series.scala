@@ -18,16 +18,33 @@ sealed trait CartesianSeries extends Series {
         s.xs.map { implicitly[Readable[T]].fromPType(_) }
       case s: CartesianSeries2D[_, _] =>
         s.xs.map { implicitly[Readable[T]].fromPType(_) }
+      case s: CartesianSeries3D[_, _, _] =>
+        s.xs.map { implicitly[Readable[T]].fromPType(_) }
     }
   }
 
   def ysAs[T : Readable]: Iterable[T] = {
     this match {
-      case s: CartesianSeries2D[_, _] =>
-        s.ys.map { implicitly[Readable[T]].fromPType(_) }
-      case _ =>
+      case s: CartesianSeries1D[_] =>
         throw new IllegalArgumentException(
           "Cannot extract ys from 1D series")
+      case s: CartesianSeries2D[_, _] =>
+        s.ys.map { implicitly[Readable[T]].fromPType(_) }
+      case s: CartesianSeries3D[_, _, _] =>
+        s.ys.map { implicitly[Readable[T]].fromPType(_) }
+    }
+  }
+
+  def zsAs[T : Readable]: Iterable[T] = {
+    this match {
+      case s: CartesianSeries1D[_] =>
+        throw new IllegalArgumentException(
+          "Cannot extract zs from 1D series")
+      case s: CartesianSeries2D[_, _] =>
+        throw new IllegalArgumentException(
+          "Cannot extract zs from 2D series")
+      case s: CartesianSeries3D[_, _, _] =>
+        s.zs.map { implicitly[Readable[T]].fromPType(_) }
     }
   }
 }
@@ -44,6 +61,17 @@ sealed abstract class CartesianSeries2D[
 extends CartesianSeries {
   val xs: Iterable[X]
   val ys: Iterable[Y]
+  val options: OptionType
+}
+
+sealed abstract class CartesianSeries3D[
+    X <: PType,
+    Y <: PType,
+    Z <: PType]
+extends CartesianSeries {
+  val xs: Iterable[X]
+  val ys: Iterable[Y]
+  val zs: Iterable[Z]
   val options: OptionType
 }
 
@@ -84,6 +112,18 @@ extends CartesianSeries2D[X, Y] {
     copy(options = newOptions)
 }
 
+case class Contour[X <: PType, Y <: PType, Z <: PType](
+    val xs: Iterable[X],
+    val ys: Iterable[Y],
+    val zs: Iterable[Z],
+    override val options: ContourOptions)
+extends CartesianSeries3D[X, Y, Z] {
+  type Self = Contour[X, Y, Z]
+  type OptionType = ContourOptions
+
+  override def options(newOptions: ContourOptions): Contour[X, Y, Z] =
+    copy(options = newOptions)
+}
 
 sealed trait ThreeDSeries extends Series {
   type Self <: ThreeDSeries

@@ -151,6 +151,21 @@ extends Plot {
     copy(series = series :+ Box(xsAsPType, BoxOptions()))
   }
 
+  /** Add a contour plot to this plot. */
+  def withContour[X: Writable, Y: Writable, Z: Writable](
+    xs: Iterable[X],
+    ys: Iterable[Y],
+    zs: Iterable[Z],
+    options: ContourOptions = ContourOptions()
+  ): CartesianPlot = {
+    val xsAsPType = xs.map { implicitly[Writable[X]].toPType }
+    val ysAsPType = ys.map { implicitly[Writable[Y]].toPType }
+    val zsAsPType = zs.map { implicitly[Writable[Z]].toPType }
+    copy(series = series :+ Contour(
+      xsAsPType, ysAsPType, zsAsPType, options
+    ))
+  }
+
   /** Set the x-axis options for this plot. */
   def xAxisOptions(newAxisOptions: AxisOptions): CartesianPlot = {
     val newAxis = options.xAxis.copy(options = newAxisOptions)
