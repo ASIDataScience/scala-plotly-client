@@ -27,7 +27,8 @@ object OptionsWriter {
   )
 
   def barOptionsToJson(options: BarOptions): JObject = {
-    ("name" -> options.name)
+    ("name" -> options.name) ~
+    ("marker" -> markerOptionsToJson(options.marker))
   }
 
   private def scatterModeToJson(mode: Seq[ScatterMode.Value])
