@@ -32,15 +32,12 @@ sealed trait CartesianSeries extends Series {
   }
 }
 
-sealed abstract class CartesianSeries1D[
-    X <: PType]
+sealed abstract class CartesianSeries1D[X <: PType]
 extends CartesianSeries {
   val xs: Iterable[X]
 }
 
-sealed abstract class CartesianSeries2D[
-    X <: PType,
-    Y <: PType]
+sealed abstract class CartesianSeries2D[X <: PType, Y <: PType]
 extends CartesianSeries {
   val xs: Iterable[X]
   val ys: Iterable[Y]
@@ -58,9 +55,7 @@ extends CartesianSeries1D[X] {
     copy(options = newOptions)
 }
 
-case class Scatter[
-    X <: PType,
-    Y <: PType](
+case class Scatter[X <: PType, Y <: PType](
     val xs: Iterable[X],
     val ys: Iterable[Y],
     override val options: ScatterOptions)

@@ -37,5 +37,3 @@ case class SurfaceXYZWriteInfo(
   sceneIndex: Int,
   options: SurfaceOptions
 ) extends SeriesWriteInfo
-
-

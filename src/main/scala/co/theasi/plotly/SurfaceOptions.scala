@@ -55,4 +55,3 @@ object SurfaceOptions {
     colorscale = None
   )
 }
- 

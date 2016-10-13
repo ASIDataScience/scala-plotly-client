@@ -113,12 +113,12 @@ object Figure {
   * Use the companion object's `apply` method to construct
   * a new figure. Set the content of the plot on the figure
   * with the [[plot]] method.
-  * 
+  *
   * '''Note''' that all the methods on this class return a
   * ''copy'' of the current instance. They do not modify the
   *  instance in place. Instances of `SinglePlotFigure`
   *  are immutable.
-  * 
+  *
   */
 case class SinglePlotFigure(plot: Plot, options: FigureOptions)
 extends Figure {
@@ -170,7 +170,7 @@ object SinglePlotFigure {
   * `val figure = GridFigure(2, 3)` will build a new figure with 6 subplots,
   * arranged in a grid with two rows and three columns. You can then use
   * the [[plot]] method to set the content of specific sub-plots.
-  * 
+  *
   * {{{
   * import util.Random
   * val xs = (0 to 100).map { i => Random.nextGaussian }
@@ -324,7 +324,7 @@ object GridFigure {
   * val xs = (0 to 100).map { i => Random.nextGaussian }
   * val ys = (0 to 100).map { i => Random.nextGaussian }
   * val ys2 = (0 to 100).map { i => Random.nextGaussian }
-  * 
+  *
   * val figure = RowFigure(2) // 2 subplots
   *   .plot(0) { CartesianPlot().withScatter(xs, ys) } // left
   *   .plot(1) { CartesianPlot().withScatter(xs, ys2) } // right

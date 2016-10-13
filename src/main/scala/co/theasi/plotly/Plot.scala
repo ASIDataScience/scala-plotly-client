@@ -281,7 +281,7 @@ object CartesianPlot {
   *   .withSurface(zs1)
   *   .withSurface(zs2)
   *  }}}
-  * 
+  *
   * All methods in this class work in the same way: they return a new
   * instance of `ThreeDPlot`. This pattern is called the immutable builder
   * pattern: it is a variant of the common

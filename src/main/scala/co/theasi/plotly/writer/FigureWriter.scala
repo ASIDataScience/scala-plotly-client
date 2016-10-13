@@ -73,7 +73,7 @@ object FigureWriter {
       case (s, index) => seriesToColumns(s, index)
     }.toMap
     val grid = Grid(columns)
-    GridWriter.draw(grid, fileName+"-grid", fileOptions)
+    GridWriter.draw(grid, fileName + "-grid", fileOptions)
   }
 
   private def seriesToColumns(
@@ -180,7 +180,7 @@ object FigureWriter {
         val yUid = drawnGrid.columnUids(yColumnName)
         val zPrefix = s"z-$index"
         val zColumnNames = s.zs.transpose.zipWithIndex.map {
-          case (row, rowIndex) => zPrefix + s"-${rowIndex+1}"
+          case (row, rowIndex) => zPrefix + s"-${rowIndex + 1}"
         }
         val zUids = zColumnNames.map { colName =>
           drawnGrid.columnUids(colName)
