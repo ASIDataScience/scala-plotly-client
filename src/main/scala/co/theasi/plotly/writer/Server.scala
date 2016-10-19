@@ -8,6 +8,8 @@ case object ServerWithDefaultCredentials extends Server {
 trait Server {
   def credentials: Credentials
   def url: String
+  // scalastyle:off magic.number
   def connTimeoutMs: Int = 2000
   def readTimeoutMs: Int = 10000
+  // scalastyle:on magic.number
 }
