@@ -19,7 +19,7 @@ object ColumnWriter {
     data
   }
 
-  def ptypeToJson[X <: PType](x: X) = x match {
+  def ptypeToJson[X <: PType](x: X): JValue = x match {
     case PInt(i) => JInt(i)
     case PDouble(d) => JDouble(d)
     case PString(s) => JString(s)

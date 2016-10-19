@@ -14,7 +14,7 @@ object FigureWriter {
       figure: Figure,
       fileName: String,
       fileOptions: FileOptions = FileOptions()
-  )(implicit server: Server) = {
+  )(implicit server: Server): PlotFile = {
     if (fileOptions.overwrite) { deleteIfExists(fileName) }
     val drawnGrid = drawGrid(figure, fileName, fileOptions)
     val body = plotAsJson(figure, drawnGrid, fileName)

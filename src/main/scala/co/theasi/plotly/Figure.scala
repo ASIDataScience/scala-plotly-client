@@ -125,8 +125,8 @@ extends Figure {
 
   type Self = SinglePlotFigure
 
-  def plots = Vector(plot)
-  def viewPorts = Vector(ViewPort((0.0, 1.0), (0.0, 1.0)))
+  def plots: Vector[Plot] = Vector(plot)
+  def viewPorts: Vector[ViewPort] = Vector(ViewPort((0.0, 1.0), (0.0, 1.0)))
 
   /** Set the content of the figure.
     *
@@ -338,9 +338,9 @@ extends Figure {
 
   type Self = RowFigure
 
-  def plots = impl.plots
-  def viewPorts = impl.viewPorts
-  def options = impl.options
+  def plots: Vector[Plot] = impl.plots
+  def viewPorts: Vector[ViewPort] = impl.viewPorts
+  def options: FigureOptions = impl.options
 
   /** Set the content of a sub-plot.
     *
