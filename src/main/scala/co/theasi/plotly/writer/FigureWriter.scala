@@ -76,6 +76,7 @@ object FigureWriter {
     GridWriter.draw(grid, fileName + "-grid", fileOptions)
   }
 
+  // scalastyle:off cyclomatic.complexity
   private def seriesToColumns(
       series: Series,
       index: Int
@@ -109,6 +110,7 @@ object FigureWriter {
 
     dataColumns ++ optionColumns
   }
+  // scalastyle:on cyclomatic.complexity
 
   private def indicesFromPlots(plots: Vector[Plot]): Vector[Int] = {
     // Get the index of each plot in the output document.
