@@ -153,14 +153,12 @@ extends Plot {
 
   /** Add a contour plot to this plot. */
   def withContour[X: Writable, Y: Writable, Z: Writable](
-    xs: Iterable[X],
-    ys: Iterable[Y],
-    zs: Iterable[Z],
+    xyzs: Iterable[(X, Y, Z)],
     options: ContourOptions = ContourOptions()
   ): CartesianPlot = {
-    val xsAsPType = xs.map { implicitly[Writable[X]].toPType }
-    val ysAsPType = ys.map { implicitly[Writable[Y]].toPType }
-    val zsAsPType = zs.map { implicitly[Writable[Z]].toPType }
+    val xsAsPType = xyzs.map { _._1 }.map { implicitly[Writable[X]].toPType }
+    val ysAsPType = xyzs.map { _._2 }.map { implicitly[Writable[Y]].toPType }
+    val zsAsPType = xyzs.map { _._3 }.map { implicitly[Writable[Z]].toPType }
     copy(series = series :+ Contour(
       xsAsPType, ysAsPType, zsAsPType, options
     ))
@@ -296,7 +294,7 @@ object CartesianPlot {
   *   .withSurface(zs1)
   *   .withSurface(zs2)
   *  }}}
-  * 
+  *
   * All methods in this class work in the same way: they return a new
   * instance of `ThreeDPlot`. This pattern is called the immutable builder
   * pattern: it is a variant of the common
