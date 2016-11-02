@@ -6,12 +6,12 @@ trait Writable[T] {
 
 trait WritableImplicits {
   implicit object WritableDouble extends Writable[Double] {
-    def toPType(x: Double) = PDouble(x)
+    def toPType(x: Double): PDouble = PDouble(x)
   }
   implicit object WritableInt extends Writable[Int] {
-    def toPType(x: Int) = PInt(x)
+    def toPType(x: Int): PInt = PInt(x)
   }
   implicit object WritableString extends Writable[String] {
-    def toPType(x: String) = PString(x)
+    def toPType(x: String): PString = PString(x)
   }
 }

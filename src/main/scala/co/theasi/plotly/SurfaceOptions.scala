@@ -42,7 +42,7 @@ case class SurfaceOptions(
     *
     * @param newColorscale Colorscale name
     */
-  def colorscale(newColorscale: String) =
+  def colorscale(newColorscale: String): SurfaceOptions =
     copy(colorscale = Some(ColorscalePredef(newColorscale)))
 }
 
@@ -55,4 +55,3 @@ object SurfaceOptions {
     colorscale = None
   )
 }
- 

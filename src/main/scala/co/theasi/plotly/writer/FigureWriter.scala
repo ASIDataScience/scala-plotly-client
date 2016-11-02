@@ -14,7 +14,7 @@ object FigureWriter {
       figure: Figure,
       fileName: String,
       fileOptions: FileOptions = FileOptions()
-  )(implicit server: Server) = {
+  )(implicit server: Server): PlotFile = {
     if (fileOptions.overwrite) { deleteIfExists(fileName) }
     val drawnGrid = drawGrid(figure, fileName, fileOptions)
     val body = plotAsJson(figure, drawnGrid, fileName)
@@ -73,9 +73,10 @@ object FigureWriter {
       case (s, index) => seriesToColumns(s, index)
     }.toMap
     val grid = Grid(columns)
-    GridWriter.draw(grid, fileName+"-grid", fileOptions)
+    GridWriter.draw(grid, fileName + "-grid", fileOptions)
   }
 
+  // scalastyle:off cyclomatic.complexity
   private def seriesToColumns(
       series: Series,
       index: Int
@@ -109,6 +110,7 @@ object FigureWriter {
 
     dataColumns ++ optionColumns
   }
+  // scalastyle:on cyclomatic.complexity
 
   private def indicesFromPlots(plots: Vector[Plot]): Vector[Int] = {
     // Get the index of each plot in the output document.
@@ -180,7 +182,7 @@ object FigureWriter {
         val yUid = drawnGrid.columnUids(yColumnName)
         val zPrefix = s"z-$index"
         val zColumnNames = s.zs.transpose.zipWithIndex.map {
-          case (row, rowIndex) => zPrefix + s"-${rowIndex+1}"
+          case (row, rowIndex) => zPrefix + s"-${rowIndex + 1}"
         }
         val zUids = zColumnNames.map { colName =>
           drawnGrid.columnUids(colName)

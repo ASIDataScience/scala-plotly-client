@@ -19,7 +19,7 @@ object CartesianPlotLayoutWriter {
 
     xAxis ~ yAxis
   }
-  
+
 
   private def axisToJson(
     axisIndex: Int,
