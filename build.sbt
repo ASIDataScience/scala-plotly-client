@@ -8,7 +8,7 @@ scalaVersion := "2.11.8"
 
 def scalacOptionsForVersion(version: String) =
   CrossVersion.partialVersion(version) match {
-    case Some((2, minor)) if minor >= 11 => "-Ywarn-unused-import"
+    case Some((2, major)) if major >= 11 => "-Ywarn-unused-import"
     case _ => ""
   }
 
