@@ -1,3 +1,4 @@
+dist: trusty
 language: scala
 scala:
   - 2.10.6
@@ -6,6 +7,7 @@ jdk:
   - oraclejdk7
   - openjdk7
   - oraclejdk8
+  - openjdk8
 test:
   - sbt ++$TRAVIS_SCALA_VERSION test
   - sbt ++$TRAVIS_SCALA_VERSION scalastyle
