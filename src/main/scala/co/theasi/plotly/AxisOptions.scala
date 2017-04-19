@@ -13,6 +13,7 @@ case class AxisOptions(
   autoTick: Option[Boolean],
   tickSpacing: Option[Double],
   tickColor: Option[Color],
+  axisType: Option[AxisType.Value],
   tickLabels: Option[Boolean]
 ) {
   def title(newTitle: String): AxisOptions = copy(title = Some(newTitle))
@@ -68,6 +69,30 @@ case class AxisOptions(
 
   def withTickLabels: AxisOptions = copy(tickLabels = Some(true))
   def noTickLabels: AxisOptions = copy(tickLabels = Some(false))
+
+  /** Set the axis type
+    *
+    * {{{
+    * val options = AxisOptions().axisType(AxisType.Log)
+    * }}}
+    *
+    * Valid values are:
+    *   - AxisType.Linear
+    *   - AxisType.Log
+    *   - AxisType.Date
+    *   - AxisType.Category
+    *
+    * If left unspecified, plotly tries to determine the
+    * correct axis type by inspecting the data.
+    *
+    * @see https://plot.ly/python/reference/#layout-xaxis-type
+    */
+  def axisType(typeValue: AxisType.Value): AxisOptions =
+    copy(axisType = Some(typeValue))
+  def axisType(typeValue: String): AxisOptions = {
+    val typeValueEnum = AxisType.withName(typeValue)
+    axisType(typeValueEnum)
+  }
 }
 
 object AxisOptions {
@@ -84,6 +109,7 @@ object AxisOptions {
     autoTick = None,
     tickSpacing = None,
     tickColor = None,
+    axisType = None,
     tickLabels = None
   )
 }

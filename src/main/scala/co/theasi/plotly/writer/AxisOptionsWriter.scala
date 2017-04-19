@@ -3,7 +3,7 @@ package co.theasi.plotly.writer
 import org.json4s._
 import org.json4s.JsonDSL._
 
-import co.theasi.plotly.AxisOptions
+import co.theasi.plotly.{AxisOptions, AxisType}
 
 object AxisOptionsWriter {
   def toJson(options: AxisOptions): JObject = (
@@ -18,7 +18,16 @@ object AxisOptionsWriter {
     ("tickfont" -> FontWriter.toJson(options.tickFont)) ~
     ("autotick" -> options.autoTick) ~
     ("dtick" -> options.tickSpacing) ~
+    ("type" -> axisTypeToJson(options.axisType)) ~
+
     ("tickcolor" -> options.tickColor.map(ColorWriter.toJson _)) ~
     ("showticklabels" -> options.tickLabels)
   )
+
+  private def axisTypeToJson(axisTypeMaybe: Option[AxisType.Value]): JValue = {
+    axisTypeMaybe match {
+      case Some(axisType) => JString(axisType.toString)
+      case None => JNothing
+    }
+  }
 }
