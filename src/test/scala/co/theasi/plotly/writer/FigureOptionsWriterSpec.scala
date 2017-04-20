@@ -70,4 +70,17 @@ class FigureOptionsWriterSpec extends FlatSpec with Matchers {
     (jobj \ "paper_bgcolor") shouldEqual JNothing
   }
 
+  it should "serialize whether to show the legend" in {
+    val figure = SinglePlotFigure()
+    val fig1 = figure.showLegend()
+    val fig2 = figure.hideLegend()
+
+    (FigureOptionsWriter.toJson(figure.options) \ "showlegend") shouldEqual
+      JNothing
+    (FigureOptionsWriter.toJson(fig1.options) \ "showlegend") shouldEqual
+      JBool(true)
+    (FigureOptionsWriter.toJson(fig2.options) \ "showlegend") shouldEqual
+      JBool(false)
+  }
+
 }
