@@ -30,4 +30,14 @@ class ScatterOptionsSpec extends FlatSpec with Matchers {
     opts2.lineColor.get shouldEqual Color.rgb(20, 21, 22)
   }
 
+  "LineOptions" should "support setting color" in {
+    val expectedColor = Color.rgba(1, 2, 3, 0.2)
+    val opts0 = LineOptions().color(expectedColor)
+    opts0.color.get shouldEqual expectedColor
+    val opts1 = LineOptions().color(1, 2, 3, 0.2)
+    opts1.color.get shouldEqual expectedColor
+    val opts2 = LineOptions().color(1, 2, 3)
+    opts2.color.get shouldEqual expectedColor.copy(a = 1.0)
+  }
+
 }
