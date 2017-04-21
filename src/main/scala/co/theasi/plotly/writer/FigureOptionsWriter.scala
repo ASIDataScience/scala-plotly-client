@@ -12,6 +12,7 @@ object FigureOptionsWriter {
   def toJson(options: FigureOptions): JObject = (
     ("title" -> options.title) ~
     ("legend" -> legendAsJson(options.legendOptions)) ~
+    ("showlegend" -> options.showLegend) ~
     ("margin" -> marginsAsJson(options.margins)) ~
     ("width" -> options.width) ~
     ("height" -> options.height) ~

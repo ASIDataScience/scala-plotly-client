@@ -17,7 +17,15 @@ trait Figure {
     * }}}
     */
   def legend(newLegend: LegendOptions): Self =
-    withNewOptions(options.copy(legendOptions = newLegend))
+    withNewOptions(options.copy(legendOptions = newLegend, showLegend = Some(true)))
+
+  /** Show the legend */
+  def showLegend(): Self =
+    withNewOptions(options.copy(showLegend = Some(true)))
+
+  /** Hide the legend */
+  def hideLegend(): Self =
+    withNewOptions(options.copy(showLegend = Some(false)))
 
   /** Set figure title */
   def title(newTitle: String): Self =
