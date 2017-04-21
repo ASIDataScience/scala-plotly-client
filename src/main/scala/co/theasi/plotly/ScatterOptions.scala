@@ -114,9 +114,30 @@ case class ScatterOptions(
     marker(newMarker)
   }
 
+  /** Update the [[LineOptions]] for this series.
+    *
+    * @see [[ScatterOptions.updatedLine]] to updated
+    *    an existing set of line options.
+    */
   def line(newLine: LineOptions): ScatterOptions =
     copy(line = newLine)
 
+  /** Update the [[LineOptions]] for this series.
+    *
+    * @param updater Function mapping the existing [[LineOptions]]
+    *   to new [[LineOptions]].
+    *
+    * @example {{{
+    * val xs = (1 to 10)
+    * val ys = (1 to 10)
+    *
+    * val p = CartesianPlot()
+    *   .withScatter(
+    *      xs, ys,
+    *      ScatterOptions().updatedLine(_.width(5).dashMode(DashMode.Dot))
+    *   )
+    * }}}
+    */
   def updatedLine(updater: LineOptions => LineOptions)
   : ScatterOptions = {
     val newLine = updater(line)
