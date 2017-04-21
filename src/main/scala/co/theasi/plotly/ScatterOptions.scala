@@ -5,7 +5,8 @@ case class ScatterOptions(
   name: Option[String],
   mode: Seq[ScatterMode.Value],
   text: Option[TextValue],
-  marker: MarkerOptions
+  marker: MarkerOptions,
+  line: LineOptions
 ) extends SeriesOptions {
 
   /** Set the name of the series */
@@ -113,6 +114,15 @@ case class ScatterOptions(
     marker(newMarker)
   }
 
+  def line(newLine: LineOptions): ScatterOptions =
+    copy(line = newLine)
+
+  def updatedLine(updater: LineOptions => LineOptions)
+  : ScatterOptions = {
+    val newLine = updater(line)
+    line(newLine)
+  }
+
 }
 
 object ScatterOptions {
@@ -120,7 +130,8 @@ object ScatterOptions {
     name = None,
     mode = Seq.empty,
     text = None,
-    marker = MarkerOptions()
+    marker = MarkerOptions(),
+    line = LineOptions()
   )
 }
 

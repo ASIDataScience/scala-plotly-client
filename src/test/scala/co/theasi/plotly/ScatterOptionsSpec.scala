@@ -12,6 +12,15 @@ class ScatterOptionsSpec extends FlatSpec with Matchers {
     opts1.mode should contain allOf (Marker, Text)
   }
 
+  it should "support setting the line options" in {
+    val expectedOptions = LineOptions().width(6)
+    val opts = ScatterOptions()
+    val opts0 = opts.line(expectedOptions)
+    opts0.line shouldEqual expectedOptions
+    val opts1 = opts.updatedLine(_.width(6))
+    opts1.line shouldEqual expectedOptions
+  }
+
   "MarkerOptions" should "support setting color" in {
     val opts0 = MarkerOptions().color(Color.rgba(1, 2, 3, 0.2))
     opts0.color.get shouldEqual Color.rgba(1, 2, 3, 0.2)
