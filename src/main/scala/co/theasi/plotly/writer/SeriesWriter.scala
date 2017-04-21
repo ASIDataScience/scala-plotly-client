@@ -12,6 +12,7 @@ object SeriesWriter {
       case s: ScatterWriteInfo => scatterToJson(s)
       case s: BarWriteInfo => barToJson(s)
       case s: BoxWriteInfo => boxToJson(s)
+      case s: ContourWriteInfo => contourToJson(s)
       case s: SurfaceZWriteInfo => surfaceZToJson(s)
       case s: SurfaceXYZWriteInfo => surfaceXYZToJson(s)
     }
@@ -40,6 +41,18 @@ object SeriesWriter {
   : JValue = {
     val List(xsrc) = info.srcs
     ("ysrc" -> xsrc) ~ axisToJson(info.axisIndex) ~ ("type" -> "box")
+  }
+
+  private def contourToJson(info: ContourWriteInfo)
+  : JValue = {
+    val List(xsrc, ysrc, zsrc) = info.srcs
+
+    ("xsrc" -> xsrc) ~
+    ("ysrc" -> ysrc) ~
+    ("zsrc" -> zsrc) ~
+    axisToJson(info.axisIndex) ~
+    OptionsWriter.contourOptionsToJson(info.options) ~
+    ("type" -> "contour")
   }
 
   private def surfaceZToJson(info: SurfaceZWriteInfo)

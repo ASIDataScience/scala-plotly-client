@@ -4,9 +4,14 @@ import org.json4s._
 import org.json4s.JsonDSL._
 
 import co.theasi.plotly.{ScatterOptions, ScatterMode, MarkerOptions,
-  TextValue, StringText, IterableText, SrcText, SurfaceOptions}
+  TextValue, StringText, IterableText, SrcText, SurfaceOptions, ContourOptions}
 
 object OptionsWriter {
+
+  def contourOptionsToJson(options: ContourOptions): JObject = {
+    ("name" -> options.name) ~
+    ("colorscale" -> options.colorscale.map { ColorscaleWriter.toJson })
+  }
 
   def scatterOptionsToJson(options: ScatterOptions): JObject = {
     ("name" -> options.name) ~
