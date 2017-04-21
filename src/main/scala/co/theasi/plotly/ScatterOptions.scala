@@ -136,6 +136,7 @@ object ScatterOptions {
 }
 
 object ScatterMode extends Enumeration {
+  val Solid = Value("solid")
   val Marker = Value("markers")
   val Line = Value("lines")
   val Text = Value("text")
