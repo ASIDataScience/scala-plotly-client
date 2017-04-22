@@ -5,7 +5,8 @@ case class ScatterOptions(
   name: Option[String],
   mode: Seq[ScatterMode.Value],
   text: Option[TextValue],
-  marker: MarkerOptions
+  marker: MarkerOptions,
+  line: LineOptions
 ) extends SeriesOptions {
 
   /** Set the name of the series */
@@ -113,6 +114,36 @@ case class ScatterOptions(
     marker(newMarker)
   }
 
+  /** Update the [[LineOptions]] for this series.
+    *
+    * @see [[ScatterOptions.updatedLine]] to updated
+    *    an existing set of line options.
+    */
+  def line(newLine: LineOptions): ScatterOptions =
+    copy(line = newLine)
+
+  /** Update the [[LineOptions]] for this series.
+    *
+    * @param updater Function mapping the existing [[LineOptions]]
+    *   to new [[LineOptions]].
+    *
+    * @example {{{
+    * val xs = (1 to 10)
+    * val ys = (1 to 10)
+    *
+    * val p = CartesianPlot()
+    *   .withScatter(
+    *      xs, ys,
+    *      ScatterOptions().updatedLine(_.width(5).dashMode(DashMode.Dot))
+    *   )
+    * }}}
+    */
+  def updatedLine(updater: LineOptions => LineOptions)
+  : ScatterOptions = {
+    val newLine = updater(line)
+    line(newLine)
+  }
+
 }
 
 object ScatterOptions {
@@ -120,11 +151,13 @@ object ScatterOptions {
     name = None,
     mode = Seq.empty,
     text = None,
-    marker = MarkerOptions()
+    marker = MarkerOptions(),
+    line = LineOptions()
   )
 }
 
 object ScatterMode extends Enumeration {
+  val Solid = Value("solid")
   val Marker = Value("markers")
   val Line = Value("lines")
   val Text = Value("text")
@@ -166,5 +199,43 @@ object MarkerOptions {
     symbol = None,
     lineWidth = None,
     lineColor = None
+  )
+}
+
+
+object DashMode extends Enumeration {
+  val Dash = Value("dash")
+  val Dot = Value("dot")
+  val DashDot = Value("dashdot")
+}
+
+
+case class LineOptions(
+  color: Option[Color],
+  width: Option[Int],
+  dashMode: Option[DashMode.Value]
+) {
+
+  def width(newWidth: Int): LineOptions = copy(width = Some(newWidth))
+
+  def color(newColor: Color): LineOptions =
+    copy(color = Some(newColor))
+  def color(r: Int, g: Int, b: Int, a: Double): LineOptions =
+    color(Color.rgba(r, g, b, a))
+  def color(r: Int, g: Int, b: Int): LineOptions =
+    color(r, g, b, 1.0)
+
+  def dashMode(newDashMode: DashMode.Value): LineOptions =
+    copy(dashMode = Some(newDashMode))
+  def dashMode(newDashMode: String): LineOptions =
+    dashMode(DashMode.withName(newDashMode))
+}
+
+
+object LineOptions {
+  def apply(): LineOptions = LineOptions(
+    color = None,
+    width = None,
+    dashMode = None
   )
 }

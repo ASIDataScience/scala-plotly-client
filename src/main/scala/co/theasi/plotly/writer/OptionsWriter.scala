@@ -3,8 +3,11 @@ package co.theasi.plotly.writer
 import org.json4s._
 import org.json4s.JsonDSL._
 
-import co.theasi.plotly.{ScatterOptions, ScatterMode, MarkerOptions,
-  TextValue, StringText, IterableText, SrcText, SurfaceOptions}
+import co.theasi.plotly.{
+  ScatterOptions, ScatterMode, MarkerOptions,
+  TextValue, StringText, IterableText, SrcText, SurfaceOptions,
+  LineOptions
+}
 
 object OptionsWriter {
 
@@ -12,7 +15,8 @@ object OptionsWriter {
     ("name" -> options.name) ~
     ("mode" -> scatterModeToJson(options.mode)) ~
     textToJson(options.text) ~
-    ("marker" -> markerOptionsToJson(options.marker))
+    ("marker" -> markerOptionsToJson(options.marker)) ~
+    ("line" -> lineOptionsToJson(options.line))
   }
 
   def surfaceOptionsToJson(options: SurfaceOptions): JObject = (
@@ -37,6 +41,12 @@ object OptionsWriter {
         ("width" -> options.lineWidth)
       )
     )
+  }
+
+  private def lineOptionsToJson(options: LineOptions): JObject = {
+    ("color" -> options.color.map(ColorWriter.toJson _)) ~
+    ("width" -> options.width) ~
+    ("dash" -> options.dashMode.map { _.toString})
   }
 
   private def textToJson(text: Option[TextValue]): JObject =

@@ -4,7 +4,9 @@ import org.scalatest._
 
 import org.json4s._
 
-import co.theasi.plotly.SurfaceOptions
+import co.theasi.plotly.{
+  SurfaceOptions, ScatterOptions, LineOptions, DashMode
+}
 
 class OptionsWriterSpec extends FlatSpec with Matchers {
 
@@ -18,6 +20,18 @@ class OptionsWriterSpec extends FlatSpec with Matchers {
     val surfaceOptions = SurfaceOptions()
     val jobj = OptionsWriter.surfaceOptionsToJson(surfaceOptions)
     (jobj \ "colorscale") shouldEqual JNothing
+  }
+
+  "scatterOptionsToJson" should "serialize line options" in {
+    val lineOptions = LineOptions()
+      .color(1, 2, 3, 0.5)
+      .width(5)
+      .dashMode(DashMode.Dot)
+    val scatterOptions = ScatterOptions().line(lineOptions)
+    val jobj = OptionsWriter.scatterOptionsToJson(scatterOptions)
+    (jobj \ "line" \ "color") shouldEqual JString("rgba(1, 2, 3, 0.5)")
+    (jobj \ "line" \ "width") shouldEqual JInt(5)
+    (jobj \ "line" \ "dash") shouldEqual JString("dot")
   }
 
 }
