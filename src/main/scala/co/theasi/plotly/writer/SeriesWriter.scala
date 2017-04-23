@@ -33,7 +33,8 @@ object SeriesWriter {
     ("xsrc" -> xsrc) ~
     ("ysrc" -> ysrc) ~
     axisToJson(info.axisIndex) ~
-    ("type" -> "bar")
+    ("type" -> "bar") ~
+    OptionsWriter.barOptionsToJson(info.options)
   }
 
   private def boxToJson(info: BoxWriteInfo)

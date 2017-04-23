@@ -136,11 +136,12 @@ extends Plot {
   /** Add a bar series to this plot. */
   def withBar[X: Writable, Y: Writable](
       xs: Iterable[X],
-      ys: Iterable[Y]
+      ys: Iterable[Y],
+      options: BarOptions = BarOptions()
   ): CartesianPlot = {
     val xsAsPType = xs.map { implicitly[Writable[X]].toPType }
     val ysAsPType = ys.map { implicitly[Writable[Y]].toPType }
-    copy(series = series :+ Bar(xsAsPType, ysAsPType, BarOptions()))
+    copy(series = series :+ Bar(xsAsPType, ysAsPType, options))
   }
 
   /** Add a box plot to this plot. */

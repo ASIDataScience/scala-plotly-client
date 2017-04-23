@@ -6,7 +6,7 @@ import org.json4s.JsonDSL._
 import co.theasi.plotly.{
   ScatterOptions, ScatterMode, MarkerOptions,
   TextValue, StringText, IterableText, SrcText, SurfaceOptions,
-  LineOptions
+  LineOptions, BarOptions
 }
 
 object OptionsWriter {
@@ -25,6 +25,11 @@ object OptionsWriter {
     ("showscale" -> options.showScale) ~
     ("colorscale" -> options.colorscale.map { ColorscaleWriter.toJson })
   )
+
+  def barOptionsToJson(options: BarOptions): JObject = {
+    ("name" -> options.name) ~
+    ("marker" -> markerOptionsToJson(options.marker))
+  }
 
   private def scatterModeToJson(mode: Seq[ScatterMode.Value])
   : Option[String] =
