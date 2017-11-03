@@ -4,7 +4,7 @@ version := "0.2.1-SNAPSHOT"
 
 organization := "co.theasi"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.3"
 
 def scalacOptionsForVersion(version: String) =
   CrossVersion.partialVersion(version) match {
@@ -14,12 +14,12 @@ def scalacOptionsForVersion(version: String) =
 
 scalacOptions += scalacOptionsForVersion(scalaVersion.value)
 
-crossScalaVersions := Seq("2.11.8", "2.10.6")
+crossScalaVersions := Seq("2.12.3", "2.10.6")
 
 libraryDependencies ++= Seq(
-  "org.scalaj" %% "scalaj-http" % "2.2.1",
-  "org.json4s" %% "json4s-native" % "3.4.1",
-  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+  "org.scalaj" %% "scalaj-http" % "2.3.0",
+  "org.json4s" %% "json4s-native" % "3.5.3",
+  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
 
 initialCommands := """
