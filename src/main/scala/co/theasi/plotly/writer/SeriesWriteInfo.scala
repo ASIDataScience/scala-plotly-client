@@ -14,6 +14,12 @@ case class ScatterWriteInfo(
   options: ScatterOptions
 ) extends SeriesWriteInfo
 
+case class Scatter3DWriteInfo(
+  srcs: List[String],
+  axisIndex: Int,
+  options: ScatterOptions
+) extends SeriesWriteInfo
+
 case class BarWriteInfo(
   srcs: List[String],
   axisIndex: Int,

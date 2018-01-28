@@ -67,6 +67,19 @@ extends CartesianSeries2D[X, Y] {
     copy(options = newOptions)
 }
 
+case class Scatter3D[X <: PType, Y <: PType, Z <: PType](
+    val xs: Iterable[X],
+    val ys: Iterable[Y],
+    val zs: Iterable[Z],
+    override val options: ScatterOptions)
+extends ThreeDSeries {
+  type Self = Scatter3D[X, Y, Z]
+  type OptionType = ScatterOptions
+
+  override def options(newOptions: ScatterOptions): Scatter3D[X, Y, Z] =
+    copy(options = newOptions)
+}
+
 case class Bar[X <: PType, Y <: PType](
     val xs: Iterable[X],
     val ys: Iterable[Y],

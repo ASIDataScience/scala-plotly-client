@@ -10,6 +10,7 @@ object SeriesWriter {
   : JValue = {
     seriesWriteInfo match {
       case s: ScatterWriteInfo => scatterToJson(s)
+      case s: Scatter3DWriteInfo => scatter3DToJson(s)
       case s: BarWriteInfo => barToJson(s)
       case s: BoxWriteInfo => boxToJson(s)
       case s: SurfaceZWriteInfo => surfaceZToJson(s)
@@ -24,6 +25,18 @@ object SeriesWriter {
     ("xsrc" -> xsrc) ~
     ("ysrc" -> ysrc) ~
     axisToJson(info.axisIndex) ~
+    OptionsWriter.scatterOptionsToJson(info.options)
+  }
+
+  private def scatter3DToJson(info: Scatter3DWriteInfo)
+  : JValue = {
+    val List(xsrc, ysrc, zsrc) = info.srcs
+
+    ("xsrc" -> xsrc) ~
+    ("ysrc" -> ysrc) ~
+    ("zsrc" -> zsrc) ~
+    axisToJson3D(info.axisIndex) ~
+    ("type" -> "scatter3d") ~
     OptionsWriter.scatterOptionsToJson(info.options)
   }
 
@@ -68,6 +81,12 @@ object SeriesWriter {
     axisIndex match {
       case 1 => ("xaxis" -> "x") ~ ("yaxis" -> "y")
       case i => ("xaxis" -> s"x$i") ~ ("yaxis" -> s"y$i")
+    }
+
+  private def axisToJson3D(axisIndex: Int): JObject =
+    axisIndex match {
+      case 1 => ("xaxis" -> "x") ~ ("yaxis" -> "y") ~ ("zaxis" -> "z")
+      case i => ("xaxis" -> s"x$i") ~ ("yaxis" -> s"y$i") ~ ("zaxis" -> s"z$i")
     }
 
   private def sceneToJson(plotIndex: Int): JObject =

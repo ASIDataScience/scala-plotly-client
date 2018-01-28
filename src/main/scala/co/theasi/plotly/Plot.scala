@@ -400,6 +400,18 @@ extends Plot {
   ): ThreeDPlot =
     withSurface(xs, ys, zs, SurfaceOptions())
 
+  def withScatter3D[X: Writable, Y: Writable, Z: Writable](
+    xs: Iterable[X],
+    ys: Iterable[Y],
+    zs: Iterable[Z],
+    options: ScatterOptions
+  ): ThreeDPlot = {
+    val xsAsPType:Iterable[PType] = xs.map { implicitly[Writable[X]].toPType }
+    val ysAsPType:Iterable[PType] = ys.map { implicitly[Writable[Y]].toPType }
+    val zsAsPType:Iterable[PType] = zs.map { implicitly[Writable[Z]].toPType }
+    copy(series = series :+ Scatter3D(xsAsPType, ysAsPType, zsAsPType, options))
+  }
+
   /** Set options for the x-axis
     *
     * $axisOptionsExample
