@@ -45,6 +45,4 @@ logBuffered in Test := false
 // Documentation
 enablePlugins(SiteScaladocPlugin)
 
-ghpages.settings
-
 git.remoteRepo := "git@github.com:ASIDataScience/scala-plotly-client.git"
