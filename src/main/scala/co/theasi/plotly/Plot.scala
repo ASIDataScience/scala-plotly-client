@@ -263,6 +263,15 @@ object CartesianPlot {
   *   .withSurface(zs2, SurfaceOptions().name("bottom"))
   * }}}
   *
+  * ==3D Scatter plots==
+  *
+  * Create 3D scatter `ThreeDPlot` instances using `withScatter`:
+  * {{{
+  * val xs = Vector(1.0, 2.0)
+  * val ys = Vector(4.0, 5.0)
+  * val zs = Vector(-1.0, -3.0)
+  * val plot = ThreeDPlot().withScatter(xs, ys, zs)
+  * }}}
   *
   * ==The immutable builder pattern==
   *
@@ -400,11 +409,11 @@ extends Plot {
   ): ThreeDPlot =
     withSurface(xs, ys, zs, SurfaceOptions())
 
-  def withScatter3D[X: Writable, Y: Writable, Z: Writable](
+  def withScatter[X: Writable, Y: Writable, Z: Writable](
     xs: Iterable[X],
     ys: Iterable[Y],
     zs: Iterable[Z],
-    options: ScatterOptions
+    options: ScatterOptions = ScatterOptions()
   ): ThreeDPlot = {
     val xsAsPType:Iterable[PType] = xs.map { implicitly[Writable[X]].toPType }
     val ysAsPType:Iterable[PType] = ys.map { implicitly[Writable[Y]].toPType }

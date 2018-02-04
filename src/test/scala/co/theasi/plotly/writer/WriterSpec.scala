@@ -20,6 +20,7 @@ class WriterSpec extends FlatSpec with Matchers {
   val testX2 = Vector(1, 2, 3)
   val testY1 = Vector(4.0, 5.0, 7.0)
   val testY2 = Vector(5, 10)
+  val testZ1 = Vector(3.0, 1.0, 4.0)
   val testText1 = Vector("A", "B", "C")
   val testZData = Vector(Vector(1.0, 2.0, 3.0), Vector(1.0, 4.0, 3.0))
 
@@ -41,6 +42,11 @@ class WriterSpec extends FlatSpec with Matchers {
   def checkTestY1(arr: JValue) = {
     val JArray(response) = arr
     response.toVector shouldEqual testY1.map { JDouble }
+  }
+
+  def checkTestZ1(arr: JValue) = {
+    val JArray(response) = arr
+    response.toVector shouldEqual testZ1.map { JDouble }
   }
 
   def checkTestY2(arr: JValue) = {
@@ -168,5 +174,18 @@ class WriterSpec extends FlatSpec with Matchers {
     checkTestZData(series0 \ "z")
     checkTestX1(series0 \ "x")
     checkTestY2(series0 \ "y")
+  }
+
+
+  it should "draw a 3D scatter plot" in {
+    val p = ThreeDPlot()
+      .withScatter(testX1, testY1, testZ1)
+    val plotFile = draw(p, randomFileName)
+    val jsonResponse = getJsonForPlotFile(plotFile)
+    val series0 = (jsonResponse \ "data")(0)
+    series0 \ "type" shouldEqual JString("scatter3d")
+    checkTestX1(series0 \ "x")
+    checkTestY1(series0 \ "y")
+    checkTestZ1(series0 \ "z")
   }
 }
