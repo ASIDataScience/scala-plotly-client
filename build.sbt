@@ -14,7 +14,7 @@ def scalacOptionsForVersion(version: String) =
 
 scalacOptions += scalacOptionsForVersion(scalaVersion.value)
 
-crossScalaVersions := Seq("2.11.8", "2.12.4")
+crossScalaVersions := Seq("2.11.12", "2.12.4")
 
 libraryDependencies ++= Seq(
   "org.scalaj" %% "scalaj-http" % "2.3.0",
