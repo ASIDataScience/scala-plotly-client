@@ -14,7 +14,7 @@ class WriterSpec extends FlatSpec with Matchers {
   implicit val testServer = new Server {
     override val credentials = Credentials("PlotlyImageTest", "786r5mecv0")
     override val url = "https://api.plot.ly/v2/"
-    override val readTimeoutMs = 20000
+    override val readTimeoutMs = 60000
   }
   val testX1 = Vector(1.0, 2.0, 3.0)
   val testX2 = Vector(1, 2, 3)

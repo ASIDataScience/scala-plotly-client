@@ -1,25 +1,19 @@
 name := "plotly"
 
-version := "0.2.2-SNAPSHOT"
+version := "0.3.0-SNAPSHOT"
 
 organization := "co.theasi"
 
 scalaVersion := "2.12.4"
 
-def scalacOptionsForVersion(version: String) =
-  CrossVersion.partialVersion(version) match {
-    case Some((2, major)) if major >= 11 => "-Ywarn-unused-import"
-    case _ => ""
-  }
+scalacOptions += "-Ywarn-unused-import"
 
-scalacOptions += scalacOptionsForVersion(scalaVersion.value)
-
-crossScalaVersions := Seq("2.11.8", "2.12.4")
+crossScalaVersions := Seq("2.11.12", "2.12.4")
 
 libraryDependencies ++= Seq(
   "org.scalaj" %% "scalaj-http" % "2.3.0",
   "org.json4s" %% "json4s-native" % "3.5.3",
-  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 )
 
 initialCommands := """
@@ -44,7 +38,5 @@ logBuffered in Test := false
 
 // Documentation
 enablePlugins(SiteScaladocPlugin)
-
-ghpages.settings
 
 git.remoteRepo := "git@github.com:ASIDataScience/scala-plotly-client.git"
