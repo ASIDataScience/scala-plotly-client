@@ -101,6 +101,8 @@ object FigureWriter {
           case (row, 0) => s"y-$index" -> row
           case (row, rowIndex) => s"z-$index-$rowIndex" -> row
         }
+      case s: Scatter3D[_, _, _] =>
+        List(s"x-$index" -> s.xs, s"y-$index" -> s.ys, s"z-$index" -> s.zs)
     }
 
     val optionColumns = series match {
@@ -154,6 +156,17 @@ object FigureWriter {
       index: Int
   ): List[String] = {
     val srcs = series match {
+      case s: Scatter3D[_, _, _] =>
+        val xName = s"x-$index"
+        val yName = s"y-$index"
+        val zName = s"z-$index"
+        val xuid = drawnGrid.columnUids(xName)
+        val yuid = drawnGrid.columnUids(yName)
+        val zuid = drawnGrid.columnUids(zName)
+        val xsrc = s"${drawnGrid.fileId}:$xuid"
+        val ysrc = s"${drawnGrid.fileId}:$yuid"
+        val zsrc = s"${drawnGrid.fileId}:$zuid"
+        List(xsrc, ysrc, zsrc)
       case s: CartesianSeries2D[_, _] =>
         val xName = s"x-$index"
         val yName = s"y-$index"
@@ -275,7 +288,9 @@ object FigureWriter {
       // The casts are really ugly. There must be a better way
       writeInfo = series match {
         case s: Scatter[_, _] => ScatterWriteInfo(srcs, plotIndex, s.options)
+        case s: Scatter3D[_, _, _] => Scatter3DWriteInfo(srcs, plotIndex, s.options)
         case s: Bar[_, _] => BarWriteInfo(srcs, plotIndex, s.options)
+        case s: Box[_] => BoxWriteInfo(srcs, plotIndex, s.options)
         case s: SurfaceZ[_] => SurfaceZWriteInfo(srcs, plotIndex, s.options)
         case s: SurfaceXYZ[_, _, _] => SurfaceXYZWriteInfo(srcs, plotIndex, s.options)
       }
