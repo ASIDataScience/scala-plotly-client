@@ -2,7 +2,7 @@ name := "plotly"
 
 version := "0.3.0-SNAPSHOT"
 
-organization := "co.theasi"
+organization := "ai.faculty"
 
 scalaVersion := "2.12.4"
 
@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
 )
 
 initialCommands := """
-  |import co.theasi.plotly._
+  |import ai.faculty.plotly._
 """.stripMargin
 
 publishMavenStyle := true
@@ -39,4 +39,4 @@ logBuffered in Test := false
 // Documentation
 enablePlugins(SiteScaladocPlugin)
 
-git.remoteRepo := "git@github.com:ASIDataScience/scala-plotly-client.git"
+git.remoteRepo := "git@github.com:facultyai/scala-plotly-client.git"

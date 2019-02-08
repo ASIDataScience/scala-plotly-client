@@ -1,8 +1,8 @@
-sonatypeProfileName := "co.theasi"
+sonatypeProfileName := "ai.faculty"
 
 // For Maven Central
 pomExtra in Global := {
-  <url>https://github.com/ASIDataScience/plotly-client</url>
+  <url>https://github.com/facultyai/scala-plotly-client</url>
   <licenses>
     <license>
       <name>MIT</name>
@@ -10,9 +10,9 @@ pomExtra in Global := {
     </license>
   </licenses>
   <scm>
-    <connection>scm:git:github.com/ASIDataScience/plotly-client</connection>
-    <developerConnection>scm:git:git@github.com:ASIDataScience/plotly-client</developerConnection>
-    <url>github.com/ASIDataScience/plotly-client</url>
+    <connection>scm:git:github.com/facultyai/scala-plotly-client</connection>
+    <developerConnection>scm:git:git@github.com:facultyai/scala-plotly-client</developerConnection>
+    <url>github.com/facultyai/scala-plotly-client</url>
   </scm>
   <developers>
     <developer>
