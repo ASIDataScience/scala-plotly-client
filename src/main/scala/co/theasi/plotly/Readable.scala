@@ -10,8 +10,7 @@ trait ReadableImplicits {
       x match {
         case PDouble(v) => v
         case PInt(v) => v.toDouble
-        case _ => throw new ClassCastException(
-          s"Cannot cast $x to double.")
+        case _ => throw new ClassCastException(s"Cannot cast $x to double.")
       }
     }
   }

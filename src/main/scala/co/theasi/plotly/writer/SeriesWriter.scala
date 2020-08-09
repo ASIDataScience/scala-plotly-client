@@ -1,44 +1,42 @@
 package co.theasi.plotly.writer
 
-import org.json4s._
+import co.theasi.plotly.{BarOptions, PlotType, ScatterOptions, SurfaceOptions}
 import org.json4s.JsonDSL._
-
-import co.theasi.plotly.SurfaceOptions
+import org.json4s._
 
 object SeriesWriter {
-  def toJson(seriesWriteInfo: SeriesWriteInfo)
-  : JValue = {
-    seriesWriteInfo match {
-      case s: ScatterWriteInfo => scatterToJson(s)
-      case s: Scatter3DWriteInfo => scatter3DToJson(s)
-      case s: BarWriteInfo => barToJson(s)
-      case s: BoxWriteInfo => boxToJson(s)
-      case s: SurfaceZWriteInfo => surfaceZToJson(s)
-      case s: SurfaceXYZWriteInfo => surfaceXYZToJson(s)
-      case s: ScatterMapboxWriteInfo => scatterMapboxToJson(s)
+  def toJson(s: SeriesWriteInfo): JValue = {
+    s.series.plotType match {
+      case PlotType.SCATTER => scatterToJson(s)
+      case PlotType.SCATTER3D => scatter3DToJson(s)
+      case PlotType.BAR => barToJson(s)
+      case PlotType.BOX => boxToJson(s)
+      case PlotType.SURFACE => surfaceZToJson(s)
+      case PlotType.SURFACEXYZ => surfaceXYZToJson(s)
+      case PlotType.SCATTERMAPBOX => scatterMapboxToJson(s)
     }
   }
 
-  private def scatterToJson(info: ScatterWriteInfo): JValue = {
+  private def scatterToJson(info: SeriesWriteInfo): JValue = {
     val List(xsrc, ysrc) = info.srcs
 
     ("xsrc" -> xsrc) ~
       ("ysrc" -> ysrc) ~
       axisToJson(info.axisIndex) ~
-      OptionsWriter.scatterOptionsToJson(info.options)
+      OptionsWriter.scatterOptionsToJson(info.series.options.asInstanceOf[ScatterOptions])
   }
 
-  private def scatterMapboxToJson(info: ScatterMapboxWriteInfo): JValue = {
+  private def scatterMapboxToJson(info: SeriesWriteInfo): JValue = {
     val List(xsrc, ysrc) = info.srcs
 
     ("xsrc" -> xsrc) ~
       ("ysrc" -> ysrc) ~
       ("type" -> "scattermapbox") ~
       axisToJson(info.axisIndex) ~
-      OptionsWriter.scatterOptionsToJson(info.options)
+      OptionsWriter.scatterOptionsToJson(info.series.options.asInstanceOf[ScatterOptions])
   }
 
-  private def scatter3DToJson(info: Scatter3DWriteInfo): JValue = {
+  private def scatter3DToJson(info: SeriesWriteInfo): JValue = {
     val List(xsrc, ysrc, zsrc) = info.srcs
 
     ("xsrc" -> xsrc) ~
@@ -46,38 +44,38 @@ object SeriesWriter {
       ("zsrc" -> zsrc) ~
       axisToJson3D(info.axisIndex) ~
       ("type" -> "scatter3d") ~
-      OptionsWriter.scatterOptionsToJson(info.options)
+      OptionsWriter.scatterOptionsToJson(info.series.options.asInstanceOf[ScatterOptions])
   }
 
-  private def barToJson(info: BarWriteInfo)
+  private def barToJson(info: SeriesWriteInfo)
   : JValue = {
     val List(xsrc, ysrc) = info.srcs
     ("xsrc" -> xsrc) ~
       ("ysrc" -> ysrc) ~
       axisToJson(info.axisIndex) ~
       ("type" -> "bar") ~
-      OptionsWriter.barOptionsToJson(info.options)
+      OptionsWriter.barOptionsToJson(info.series.options.asInstanceOf[BarOptions])
   }
 
-  private def boxToJson(info: BoxWriteInfo)
+  private def boxToJson(info: SeriesWriteInfo)
   : JValue = {
     val List(xsrc) = info.srcs
     ("ysrc" -> xsrc) ~ axisToJson(info.axisIndex) ~ ("type" -> "box")
   }
 
-  private def surfaceZToJson(info: SurfaceZWriteInfo)
+  private def surfaceZToJson(info: SeriesWriteInfo)
   : JValue = {
     val List(zsrc) = info.srcs
     ("zsrc" -> zsrc) ~
-      surfaceToJsonHelper(info.sceneIndex, info.options)
+      surfaceToJsonHelper(info.axisIndex, info.series.options.asInstanceOf[SurfaceOptions])
   }
 
-  private def surfaceXYZToJson(info: SurfaceXYZWriteInfo): JValue = {
+  private def surfaceXYZToJson(info: SeriesWriteInfo): JValue = {
     val List(xsrc, ysrc, zsrc) = info.srcs
     ("xsrc" -> xsrc) ~
       ("ysrc" -> ysrc) ~
       ("zsrc" -> zsrc) ~
-      surfaceToJsonHelper(info.sceneIndex, info.options)
+      surfaceToJsonHelper(info.axisIndex, info.series.options.asInstanceOf[SurfaceOptions])
   }
 
   private def surfaceToJsonHelper(plotIndex: Int, options: SurfaceOptions) = {

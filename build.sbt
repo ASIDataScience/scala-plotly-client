@@ -4,16 +4,12 @@ version := "0.3.0-SNAPSHOT"
 
 organization := "co.theasi"
 
-scalaVersion := "2.12.4"
-
-scalacOptions += "-Ywarn-unused-import"
-
-crossScalaVersions := Seq("2.11.12", "2.12.4")
+scalaVersion := "2.13.3"
 
 libraryDependencies ++= Seq(
-  "org.scalaj" %% "scalaj-http" % "2.3.0",
-  "org.json4s" %% "json4s-native" % "3.5.3",
-  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+  "org.scalaj" %% "scalaj-http" % "2.4.2",
+  "org.json4s" %% "json4s-native" % "3.7.0-M1",
+  "org.scalatest" %% "scalatest" % "3.2.0" % "test"
 )
 
 initialCommands := """
@@ -39,4 +35,4 @@ logBuffered in Test := false
 // Documentation
 enablePlugins(SiteScaladocPlugin)
 
-git.remoteRepo := "git@github.com:ASIDataScience/scala-plotly-client.git"
+git.remoteRepo := "git@github.com:tnyz/scala-plotly-client.git"

@@ -1,21 +1,18 @@
 package co.theasi.plotly.writer
 
+import co.theasi.plotly._
+import org.json4s.JsonDSL._
 import org.json4s._
 import org.json4s.native.JsonMethods._
-import org.json4s.JsonDSL._
 
-import scala.util.{Try, Success, Failure}
-
-import co.theasi.plotly._
+import scala.util.{Failure, Success, Try}
 
 object FigureWriter {
 
-  def draw(
-      figure: Figure,
-      fileName: String,
-      fileOptions: FileOptions = FileOptions()
-  )(implicit server: Server): PlotFile = {
-    if (fileOptions.overwrite) { deleteIfExists(fileName) }
+  def draw(figure: Figure, fileName: String, fileOptions: FileOptions = FileOptions())(implicit server: Server): PlotFile = {
+    if (fileOptions.overwrite) {
+      deleteIfExists(fileName)
+    }
     val drawnGrid = drawGrid(figure, fileName, fileOptions)
     val body = plotAsJson(figure, drawnGrid, fileName)
     val request = Api.post("plots", compact(render(body)))
@@ -23,14 +20,14 @@ object FigureWriter {
     PlotFile.fromResponse(responseAsJson \ "file")
   }
 
-  def plotAsJson(
-      figure: Figure,
-      drawnGrid: GridFile,
-      fileName: String
-  ): JObject = {
+  def plotAsJson(figure: Figure,
+                 drawnGrid: GridFile,
+                 fileName: String): JObject = {
 
     val writeInfos = extractSeriesWriteInfos(figure, drawnGrid)
-    val seriesAsJson = writeInfos.map { SeriesWriter.toJson }
+    val seriesAsJson = writeInfos.map {
+      SeriesWriter.toJson
+    }
 
     val plotIndices = indicesFromPlots(figure.plots)
 
@@ -44,26 +41,25 @@ object FigureWriter {
       }
     } yield fragment
 
-    val fragmentsAsJson = layoutFragments.reduce { _ ~ _ }
+    val fragmentsAsJson = layoutFragments.reduce {
+      _ ~ _
+    }
     val optionsAsJson = FigureOptionsWriter.toJson(figure.options)
     val layout = fragmentsAsJson ~ optionsAsJson
 
     val body =
       ("figure" ->
         ("data" -> seriesAsJson) ~ ("layout" -> layout)
-      ) ~
-      ("filename" -> fileName) ~
-      ("world_readable" -> true)
+        ) ~
+        ("filename" -> fileName) ~
+        ("world_readable" -> true)
 
     body
   }
 
-  private def drawGrid(
-      figure: Figure,
-      fileName: String,
-      fileOptions: FileOptions)
-      (implicit server: Server)
-  : GridFile = {
+  private def drawGrid(figure: Figure,
+                       fileName: String,
+                       fileOptions: FileOptions)(implicit server: Server): GridFile = {
     val allSeries = for {
       subplot <- figure.plots
       series <- subplot.series
@@ -77,16 +73,11 @@ object FigureWriter {
   }
 
   // scalastyle:off cyclomatic.complexity
-  private def seriesToColumns(
-      series: Series,
-      index: Int
-  ): List[(String, Iterable[PType])] = {
+  private def seriesToColumns(series: Series, index: Int): List[(String, Iterable[PType])] = {
 
     val dataColumns = series match {
-      case s: CartesianSeries2D[_, _] =>
-        List(s"x-$index" -> s.xs, s"y-$index" -> s.ys)
-      case s: CartesianSeries1D[_] =>
-        List(s"x-$index" -> s.xs)
+      case s: CartesianSeries2D[_, _] => List(s"x-$index" -> s.xs, s"y-$index" -> s.ys)
+      case s: CartesianSeries1D[_] => List(s"x-$index" -> s.xs)
       case s: SurfaceZ[_] =>
         s.zs.transpose.zipWithIndex.map { case (row, rowIndex) =>
           s"z-$index-$rowIndex" -> row
@@ -101,8 +92,7 @@ object FigureWriter {
           case (row, 0) => s"y-$index" -> row
           case (row, rowIndex) => s"z-$index-$rowIndex" -> row
         }
-      case s: Scatter3D[_, _, _] =>
-        List(s"x-$index" -> s.xs, s"y-$index" -> s.ys, s"z-$index" -> s.zs)
+      case s: Scatter3D[_, _, _] => List(s"x-$index" -> s.xs, s"y-$index" -> s.ys, s"z-$index" -> s.zs)
     }
 
     val optionColumns = series match {
@@ -110,8 +100,9 @@ object FigureWriter {
       case _ => List.empty[(String, Iterable[PType])]
     }
 
-    dataColumns ++ optionColumns
+    dataColumns.map { case (str, iterable) => (str, iterable.map(_.asInstanceOf[PType])) } ++ optionColumns
   }
+
   // scalastyle:on cyclomatic.complexity
 
   private def indicesFromPlots(plots: Vector[Plot]): Vector[Int] = {
@@ -124,18 +115,17 @@ object FigureWriter {
     case class Counters(cartesian: Int, threeD: Int)
 
     val plotCounters = plots.scanLeft(Counters(1, 1)) {
-      (curIndices, plot) => plot match {
-        case p: CartesianPlot =>
-          curIndices.copy(cartesian = curIndices.cartesian + 1)
-        case p: ThreeDPlot =>
-          curIndices.copy(threeD = curIndices.threeD + 1)
-      }
+      (curIndices, plot) =>
+        plot match {
+          case _: CartesianPlot => curIndices.copy(cartesian = curIndices.cartesian + 1)
+          case _: ThreeDPlot => curIndices.copy(threeD = curIndices.threeD + 1)
+        }
     }
 
     val plotIndices = plots.zip(plotCounters).map { case (plot, counters) =>
       plot match {
-        case p: CartesianPlot => counters.cartesian
-        case p: ThreeDPlot => counters.threeD
+        case _: CartesianPlot => counters.cartesian
+        case _: ThreeDPlot => counters.threeD
       }
     }
 
@@ -143,18 +133,16 @@ object FigureWriter {
   }
 
 
-  def scatterOptionsToColumns(options: ScatterOptions, index: Int)
-  : List[(String, Iterable[PType])] =
+  def scatterOptionsToColumns(options: ScatterOptions, index: Int): List[(String, Iterable[PType])] =
     options.text match {
-      case Some(IterableText(values)) => List(s"text-$index" -> values)
+      case Some(IterableText(values)) => List(s"text-$index" -> values.map(_.asInstanceOf[PType]))
       case _ => List.empty
     }
 
-  private def srcsFromDrawnGrid(
-      drawnGrid: GridFile,
-      series: Series,
-      index: Int
-  ): List[String] = {
+  private def srcsFromDrawnGrid(drawnGrid: GridFile,
+                                 series: Series,
+                                 index: Int
+                               ): List[String] = {
     val srcs = series match {
       case s: Scatter3D[_, _, _] =>
         val xName = s"x-$index"
@@ -209,31 +197,22 @@ object FigureWriter {
     srcs
   }
 
-  private def updateSeriesFromDrawnGrid(
-    drawnGrid: GridFile,
-    series: Series,
-    index: Int
-  ): Series =
+  private def updateSeriesFromDrawnGrid(drawnGrid: GridFile,
+                                        series: Series,
+                                        index: Int
+                                       ): Series =
     series match {
-      case s: Scatter[_, _] =>
-        val newOptions = updateScatterOptionsFromDrawnGrid(drawnGrid, s.options, index)
-        s.copy(options = newOptions)
-      case s: Bar[_, _] =>
-        val newOptions = updateBarOptionsFromDrawnGrid(drawnGrid, s.options, index)
-        s.copy(options = newOptions)
-      case s: Box[_] =>
-        val newOptions = updateBoxOptionsFromDrawnGrid(drawnGrid, s.options, index)
-        s.copy(options = newOptions)
+      case s: Scatter[_, _] => s //TODO: updateScatterOptionsFromDrawnGrid
+      case s: Bar[_, _] => s
+      case s: Box[_] => s
       case o => o
     }
 
-  private def updateScatterOptionsFromDrawnGrid(
-    drawnGrid: GridFile,
-    options: ScatterOptions,
-    index: Int
-  ): ScatterOptions = {
+  private def updateScatterOptionsFromDrawnGrid(drawnGrid: GridFile,
+                                                options: ScatterOptions,
+                                                index: Int): ScatterOptions = {
     val newText = options.text.map {
-      case IterableText(values) =>
+      case IterableText(_) =>
         val textName = s"text-$index"
         val textUid = drawnGrid.columnUids(textName)
         val textSrc = s"${drawnGrid.fileId}:$textUid"
@@ -243,22 +222,7 @@ object FigureWriter {
     options.copy(text = newText)
   }
 
-  private def updateBarOptionsFromDrawnGrid(
-      drawnGrid: GridFile,
-      options: BarOptions,
-      index: Int
-  ): BarOptions = options
-
-  private def updateBoxOptionsFromDrawnGrid(
-    drawnGrid: GridFile,
-    options: BoxOptions,
-    index: Int
-  ): BoxOptions = options
-
-  private def extractSeriesWriteInfos(
-      figure: Figure,
-      drawnGrid: GridFile
-  ): Vector[SeriesWriteInfo] = {
+  private def extractSeriesWriteInfos(figure: Figure, drawnGrid: GridFile): Vector[SeriesWriteInfo] = {
 
     val allSeries = for {
       subplot <- figure.plots
@@ -270,11 +234,9 @@ object FigureWriter {
       srcs = srcsFromDrawnGrid(drawnGrid, series, index)
     } yield srcs
 
-    val allUpdatedSeries = for {
-      (series, index) <- allSeries.zipWithIndex
-      updatedSeries = updateSeriesFromDrawnGrid(
-        drawnGrid, series, index)
-    } yield updatedSeries
+    val allUpdatedSeries = for {(series, index) <- allSeries.zipWithIndex
+                                updatedSeries = updateSeriesFromDrawnGrid(drawnGrid, series, index)
+                                } yield updatedSeries
 
     val plotIndices = indicesFromPlots(figure.plots)
 
@@ -283,24 +245,15 @@ object FigureWriter {
       series <- subplot.series
     } yield plotIndex
 
-    val writeInfos = for {
-      (series, srcs, plotIndex) <- (allUpdatedSeries, seriesSrcs, seriesPlotIndex).zipped
-      // The casts are really ugly. There must be a better way
-      writeInfo = series match {
-        case s: Scatter[_, _] => ScatterWriteInfo(srcs, plotIndex, s.options)
-        case s: Scatter3D[_, _, _] => Scatter3DWriteInfo(srcs, plotIndex, s.options)
-        case s: Bar[_, _] => BarWriteInfo(srcs, plotIndex, s.options)
-        case s: Box[_] => BoxWriteInfo(srcs, plotIndex, s.options)
-        case s: SurfaceZ[_] => SurfaceZWriteInfo(srcs, plotIndex, s.options)
-        case s: SurfaceXYZ[_, _, _] => SurfaceXYZWriteInfo(srcs, plotIndex, s.options)
-      }
-    } yield writeInfo
-
-    writeInfos.toVector
+    (seriesSrcs, seriesPlotIndex, allUpdatedSeries).zipped.map {
+      case (srcs, index, series) => SeriesWriteInfo(srcs, index, series)
+    }
   }
 
   private def deleteIfExists(fileName: String)(implicit server: Server) {
-    Try { PlotFile.fromFileName(fileName) } match {
+    Try {
+      PlotFile.fromFileName(fileName)
+    } match {
       case Success(plot) => // exists already -> delete
         Api.despatchAndInterpret(Api.delete(s"plots/${plot.fileId}"))
       case Failure(PlotlyException("Not found.")) => // good to go

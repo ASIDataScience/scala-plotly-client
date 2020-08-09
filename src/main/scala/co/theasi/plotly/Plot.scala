@@ -96,7 +96,7 @@ object Plot {
   * adapted for immutable objects.
   */
 case class CartesianPlot(
-    series: Vector[CartesianSeries],
+    series: Vector[Series],
     options: CartesianPlotOptions)
 extends Plot {
   type OptionType = CartesianPlotOptions
@@ -172,7 +172,7 @@ extends Plot {
 object CartesianPlot {
 
   def apply(): CartesianPlot = CartesianPlot(
-    Vector.empty[CartesianSeries], CartesianPlotOptions())
+    Vector.empty[Series], CartesianPlotOptions())
 
 }
 

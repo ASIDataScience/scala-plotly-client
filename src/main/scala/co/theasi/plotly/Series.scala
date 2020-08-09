@@ -1,141 +1,83 @@
 package co.theasi.plotly
 
-
 sealed trait Series {
   type Self <: Series
   type OptionType <: SeriesOptions
 
+  val plotType: PlotType.Value
   val options: OptionType
-
-  def options(newOptions: OptionType): Self
 }
 
-sealed trait CartesianSeries extends Series {
-  type Self <: CartesianSeries
-
-  def xsAs[T: Readable]: Iterable[T] = {
-    this match {
-      case s: CartesianSeries1D[_] =>
-        s.xs.map {
-          implicitly[Readable[T]].fromPType(_)
-        }
-      case s: CartesianSeries2D[_, _] =>
-        s.xs.map {
-          implicitly[Readable[T]].fromPType(_)
-        }
-    }
-  }
-
-  def ysAs[T: Readable]: Iterable[T] = {
-    this match {
-      case s: CartesianSeries2D[_, _] =>
-        s.ys.map {
-          implicitly[Readable[T]].fromPType(_)
-        }
-      case _ =>
-        throw new IllegalArgumentException(
-          "Cannot extract ys from 1D series")
-    }
-  }
-}
-
-sealed abstract class CartesianSeries1D[X <: PType]
-  extends CartesianSeries {
+sealed abstract class CartesianSeries1D[X <: PType] extends Series {
   val xs: Iterable[X]
+
+  def xsAs[T: Readable]: Iterable[T] = xs.map(p => implicitly[Readable[T]].fromPType(p))
+
 }
 
-sealed abstract class CartesianSeries2D[X <: PType, Y <: PType]
-  extends CartesianSeries {
+sealed abstract class CartesianSeries2D[X <: PType, Y <: PType] extends Series {
   val xs: Iterable[X]
   val ys: Iterable[Y]
   val options: OptionType
+
+  def xsAs[T: Readable]: Iterable[T] = xs.map(p => implicitly[Readable[T]].fromPType(p))
+
+  def ysAs[T: Readable]: Iterable[T] = ys.map(p => implicitly[Readable[T]].fromPType(p))
 }
 
-case class Box[X <: PType](
-                            val xs: Iterable[X],
-                            override val options: BoxOptions)
-  extends CartesianSeries1D[X] {
+case class Box[X <: PType](xs: Iterable[X], override val options: BoxOptions) extends CartesianSeries1D[X] {
   type Self = Box[X]
   type OptionType = BoxOptions
-
-  override def options(newOptions: BoxOptions): Box[X] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.BOX
 }
 
-case class Scatter[X <: PType, Y <: PType](
-                                            val xs: Iterable[X],
-                                            val ys: Iterable[Y],
-                                            override val options: ScatterOptions)
+case class Scatter[X <: PType, Y <: PType](xs: Iterable[X], ys: Iterable[Y], override val options: ScatterOptions)
   extends CartesianSeries2D[X, Y] {
   type Self = Scatter[X, Y]
   type OptionType = ScatterOptions
-
-  override def options(newOptions: ScatterOptions): Scatter[X, Y] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.SCATTER
 }
 
-case class ScatterMapbox[X <: PType, Y <: PType](
-                                                  val xs: Iterable[X],
-                                                  val ys: Iterable[Y],
-                                                  override val options: ScatterOptions)
+case class ScatterMapbox[X <: PType, Y <: PType](xs: Iterable[X], ys: Iterable[Y], override val options: ScatterOptions)
   extends CartesianSeries2D[X, Y] {
   type Self = ScatterMapbox[X, Y]
   type OptionType = ScatterOptions
-
-  override def options(newOptions: ScatterOptions): ScatterMapbox[X, Y] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.SCATTERMAPBOX
 }
 
-case class Scatter3D[X <: PType, Y <: PType, Z <: PType](
-                                                          val xs: Iterable[X],
-                                                          val ys: Iterable[Y],
-                                                          val zs: Iterable[Z],
-                                                          override val options: ScatterOptions)
+case class Scatter3D[X <: PType, Y <: PType, Z <: PType](xs: Iterable[X], ys: Iterable[Y], zs: Iterable[Z],
+                                                         override val options: ScatterOptions)
   extends ThreeDSeries {
   type Self = Scatter3D[X, Y, Z]
   type OptionType = ScatterOptions
-
-  override def options(newOptions: ScatterOptions): Scatter3D[X, Y, Z] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.SCATTER3D
 }
 
-case class Bar[X <: PType, Y <: PType](
-                                        val xs: Iterable[X],
-                                        val ys: Iterable[Y],
-                                        override val options: BarOptions)
+case class Bar[X <: PType, Y <: PType](xs: Iterable[X], ys: Iterable[Y], override val options: BarOptions)
   extends CartesianSeries2D[X, Y] {
   type Self = Bar[X, Y]
   type OptionType = BarOptions
-
-  override def options(newOptions: BarOptions): Bar[X, Y] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.BAR
 }
-
 
 sealed trait ThreeDSeries extends Series {
   type Self <: ThreeDSeries
 }
 
-case class SurfaceZ[Z <: PType](
-                                 val zs: Iterable[Iterable[Z]],
-                                 val options: SurfaceOptions
-                               ) extends ThreeDSeries {
+case class SurfaceZ[Z <: PType](zs: Iterable[Iterable[Z]], options: SurfaceOptions) extends ThreeDSeries {
   type Self = SurfaceZ[Z]
   type OptionType = SurfaceOptions
-
-  def options(newOptions: SurfaceOptions): SurfaceZ[Z] =
-    copy(options = newOptions)
+  override val plotType: PlotType.Value = PlotType.SURFACE
 }
 
-case class SurfaceXYZ[X <: PType, Y <: PType, Z <: PType](
-                                                           val xs: Iterable[X],
-                                                           val ys: Iterable[Y],
-                                                           val zs: Iterable[Iterable[Z]],
-                                                           val options: SurfaceOptions
-                                                         ) extends ThreeDSeries {
+case class SurfaceXYZ[X <: PType, Y <: PType, Z <: PType](xs: Iterable[X], ys: Iterable[Y],
+                                                          zs: Iterable[Iterable[Z]], options: SurfaceOptions) extends ThreeDSeries {
   type Self = SurfaceXYZ[X, Y, Z]
   type OptionType = SurfaceOptions
+  override val plotType: PlotType.Value = PlotType.SURFACEXYZ
+}
 
-  def options(newOptions: SurfaceOptions): SurfaceXYZ[X, Y, Z] =
-    copy(options = newOptions)
+object PlotType extends Enumeration {
+  type label = PlotType.Value
+  val SCATTER, SCATTER3D, SURFACE, SURFACEXYZ, BAR, BOX, SCATTERMAPBOX = Value
 }
