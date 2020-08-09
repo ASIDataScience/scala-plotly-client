@@ -43,3 +43,9 @@ case class SurfaceXYZWriteInfo(
   sceneIndex: Int,
   options: SurfaceOptions
 ) extends SeriesWriteInfo
+
+case class ScatterMapboxWriteInfo(
+  srcs: List[String],
+  axisIndex: Int,
+  options: ScatterOptions
+) extends SeriesWriteInfo
