@@ -1,12 +1,11 @@
 package co.theasi.plotly.writer
 
-import org.scalatest._
-
-import org.json4s._
-
 import co.theasi.plotly._
+import org.json4s._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class FigureOptionsWriterSpec extends FlatSpec with Matchers {
+class FigureOptionsWriterSpec extends AnyFlatSpec with Matchers {
 
   "toJson" should "serialize legend options" in {
     val figure = SinglePlotFigure().legend(

@@ -1,13 +1,11 @@
 package co.theasi.plotly.writer
 
-import org.scalatest._
-
+import co.theasi.plotly.{AxisOptions, ThreeDPlot, ViewPort}
 import org.json4s._
-import org.json4s.native.JsonMethods._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import co.theasi.plotly.{ThreeDPlot, ViewPort, AxisOptions}
-
-class ThreeDPlotLayoutWriterSpec extends FlatSpec with Matchers {
+class ThreeDPlotLayoutWriterSpec extends AnyFlatSpec with Matchers {
 
   val defaultViewPort = ViewPort((0.0, 0.5), (0.1, 0.6))
 

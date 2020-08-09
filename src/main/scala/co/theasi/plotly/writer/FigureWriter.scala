@@ -36,6 +36,7 @@ object FigureWriter {
       fragment = plot match {
         case p: CartesianPlot => CartesianPlotLayoutWriter.toJson(index, viewPort, p)
         case p: ThreeDPlot => ThreeDPlotLayoutWriter.toJson(index, viewPort, p)
+        case _ => JObject()
       }
     } yield fragment
 
@@ -118,6 +119,7 @@ object FigureWriter {
         plot match {
           case _: CartesianPlot => curIndices.copy(cartesian = curIndices.cartesian + 1)
           case _: ThreeDPlot => curIndices.copy(threeD = curIndices.threeD + 1)
+          case _ => curIndices
         }
     }
 
@@ -125,6 +127,7 @@ object FigureWriter {
       plot match {
         case _: CartesianPlot => counters.cartesian
         case _: ThreeDPlot => counters.threeD
+        case _ => 0
       }
     }
 

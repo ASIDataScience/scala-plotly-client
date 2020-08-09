@@ -1,8 +1,9 @@
 package co.theasi.plotly
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class CartesianPlotSpec extends FlatSpec with Matchers {
+class CartesianPlotSpec extends AnyFlatSpec with Matchers {
 
   "A CartesianPlot" should "allow setting x-axis options" in {
     val p = CartesianPlot().xAxisOptions(AxisOptions().title("hello"))

@@ -1,8 +1,9 @@
 package co.theasi.plotly
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class SurfaceOptionsSpec extends FlatSpec with Matchers {
+class SurfaceOptionsSpec extends AnyFlatSpec with Matchers {
 
   "SurfaceOptions" should "support setting opacity" in {
     val opts0 = SurfaceOptions().opacity(0.4)

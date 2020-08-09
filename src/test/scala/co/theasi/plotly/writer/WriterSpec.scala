@@ -1,15 +1,14 @@
 package co.theasi.plotly.writer
 
+import co.theasi.plotly._
+import org.json4s._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
+
 import scala.util.Random
 
-import org.json4s._
-
-import org.scalatest._
-
-import co.theasi.plotly._
-
 @Slow
-class WriterSpec extends FlatSpec with Matchers {
+class WriterSpec extends AnyFlatSpec with Matchers {
 
   implicit val testServer = new Server {
     override val credentials = Credentials("PlotlyImageTest", "786r5mecv0")

@@ -29,8 +29,8 @@ object SeriesWriter {
   private def scatterMapboxToJson(info: SeriesWriteInfo): JValue = {
     val List(xsrc, ysrc) = info.srcs
 
-    ("xsrc" -> xsrc) ~
-      ("ysrc" -> ysrc) ~
+    ("lonsrc" -> xsrc) ~
+      ("latsrc" -> ysrc) ~
       ("type" -> "scattermapbox") ~
       OptionsWriter.scatterOptionsToJson(info.series.options.asInstanceOf[ScatterOptions])
   }

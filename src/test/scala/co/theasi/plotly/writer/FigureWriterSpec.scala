@@ -1,12 +1,12 @@
 package co.theasi.plotly.writer
 
-import org.json4s._
-import org.json4s.native.JsonMethods._
-
-import org.scalatest._
 import co.theasi.plotly._
+import org.json4s._
+import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class FigureWriterSpec extends FlatSpec with Matchers with Inside {
+class FigureWriterSpec extends AnyFlatSpec with Matchers with Inside {
 
   val testZData = Vector(Vector(1, 2, 3), Vector(4, 5, 6))
   val testZData2 = Vector(Vector(1, 2, 4), Vector(5, 8, 9))

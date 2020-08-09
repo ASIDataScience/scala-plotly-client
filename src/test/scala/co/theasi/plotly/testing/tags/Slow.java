@@ -1,4 +1,4 @@
-package co.theasi.plotly;
+package co.theasi.plotly.testing.tags;
 
 import java.lang.annotation.*;
 import org.scalatest.TagAnnotation ;

@@ -1,12 +1,11 @@
 package co.theasi.plotly.writer
 
+import co.theasi.plotly.{Color, Font}
 import org.json4s._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import org.scalatest._
-
-import co.theasi.plotly.{Font, Color}
-
-class FontWriterSpec extends FlatSpec with Matchers {
+class FontWriterSpec extends AnyFlatSpec with Matchers {
   "FontWriter.toJson" should "serialize the font color" in {
     val testColor = Color.rgb(10, 20, 30)
     val font = Font().copy(color = Some(testColor))

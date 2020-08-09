@@ -12,6 +12,10 @@ object Plot {
   def apply(): CartesianPlot = CartesianPlot()
 }
 
+case class GeoCartesianPlot(series: Vector[Series],
+                            options: CartesianPlotOptions) extends Plot {
+  type OptionType = CartesianPlotOptions
+}
 
 /** Plot with Cartesian axes
  *

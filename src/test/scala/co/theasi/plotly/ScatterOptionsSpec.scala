@@ -1,8 +1,9 @@
 package co.theasi.plotly
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ScatterOptionsSpec extends FlatSpec with Matchers {
+class ScatterOptionsSpec extends AnyFlatSpec with Matchers {
 
   "ScatterOptions" should "support setting mode" in {
     import ScatterMode._

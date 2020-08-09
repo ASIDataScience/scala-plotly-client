@@ -1,8 +1,9 @@
 package co.theasi.plotly
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ThreeDPlotSpec extends FlatSpec with Matchers {
+class ThreeDPlotSpec extends AnyFlatSpec with Matchers {
 
   "A 3D plot" should "allow setting x-axis options" in {
     val p = ThreeDPlot().xAxisOptions(AxisOptions().title("hello"))

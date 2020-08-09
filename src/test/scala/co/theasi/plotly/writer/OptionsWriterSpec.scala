@@ -1,14 +1,11 @@
 package co.theasi.plotly.writer
 
-import org.scalatest._
-
+import co.theasi.plotly.{DashMode, LineOptions, ScatterOptions, SurfaceOptions}
 import org.json4s._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import co.theasi.plotly.{
-  SurfaceOptions, ScatterOptions, LineOptions, DashMode
-}
-
-class OptionsWriterSpec extends FlatSpec with Matchers {
+class OptionsWriterSpec extends AnyFlatSpec with Matchers {
 
   "surfaceOptionsToJson" should "serialize the colorscale if present" in {
     val surfaceOptions = SurfaceOptions().colorscale("Viridis")

@@ -1,8 +1,10 @@
 package co.theasi.plotly
 
 import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class FigureSpec extends FlatSpec with Matchers with Inside {
+class FigureSpec extends AnyFlatSpec with Matchers with Inside {
 
   def xSize(viewPort: ViewPort) =
     viewPort.xDomain._2 - viewPort.xDomain._1

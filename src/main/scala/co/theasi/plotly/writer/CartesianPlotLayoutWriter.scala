@@ -12,10 +12,8 @@ object CartesianPlotLayoutWriter {
     viewPort: ViewPort,
     plot: CartesianPlot)
   : JObject = {
-    val xAxis = axisToJson(
-      axisIndex, viewPort.xDomain, "xaxis", "y", plot.options.xAxis.options)
-    val yAxis = axisToJson(
-      axisIndex, viewPort.yDomain, "yaxis", "x", plot.options.yAxis.options)
+    val xAxis = axisToJson(axisIndex, viewPort.xDomain, "xaxis", "y", plot.options.xAxis.options)
+    val yAxis = axisToJson(axisIndex, viewPort.yDomain, "yaxis", "x", plot.options.yAxis.options)
 
     xAxis ~ yAxis
   }
