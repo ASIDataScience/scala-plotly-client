@@ -25,6 +25,16 @@ sealed abstract class CartesianSeries2D[X <: PType, Y <: PType] extends Series {
   def ysAs[T: Readable]: Iterable[T] = ys.map(p => implicitly[Readable[T]].fromPType(p))
 }
 
+sealed abstract class CartesianSeriesGeo[X <: PType, Y <: PType] extends Series {
+  val lons: Iterable[X]
+  val lats: Iterable[Y]
+  val options: OptionType
+
+  def xsAs[T: Readable]: Iterable[T] = lons.map(p => implicitly[Readable[T]].fromPType(p))
+
+  def ysAs[T: Readable]: Iterable[T] = lats.map(p => implicitly[Readable[T]].fromPType(p))
+}
+
 case class Box[X <: PType](xs: Iterable[X], override val options: BoxOptions) extends CartesianSeries1D[X] {
   type Self = Box[X]
   type OptionType = BoxOptions
@@ -38,8 +48,8 @@ case class Scatter[X <: PType, Y <: PType](xs: Iterable[X], ys: Iterable[Y], ove
   override val plotType: PlotType.Value = PlotType.SCATTER
 }
 
-case class ScatterMapbox[X <: PType, Y <: PType](xs: Iterable[X], ys: Iterable[Y], override val options: ScatterOptions)
-  extends CartesianSeries2D[X, Y] {
+case class ScatterMapbox[X <: PType, Y <: PType](lons: Iterable[X], lats: Iterable[Y], override val options: ScatterOptions)
+  extends CartesianSeriesGeo[X, Y] {
   type Self = ScatterMapbox[X, Y]
   type OptionType = ScatterOptions
   override val plotType: PlotType.Value = PlotType.SCATTERMAPBOX

@@ -31,25 +31,24 @@ object OptionsWriter {
     ("marker" -> markerOptionsToJson(options.marker))
   }
 
-  private def scatterModeToJson(mode: Seq[ScatterMode.Value])
-  : Option[String] =
+  private def scatterModeToJson(mode: Seq[ScatterMode.Value]): Option[String] =
     if (mode.isEmpty) { None }
     else { Some(mode.map { _.toString.toLowerCase }.mkString("+")) }
 
   private def markerOptionsToJson(options: MarkerOptions): JObject = {
-    ("color" -> options.color.map(ColorWriter.toJson _)) ~
+    ("color" -> options.color.map(ColorWriter.toJson)) ~
     ("size" -> options.size) ~
     ("symbol" -> options.symbol) ~
     ("line" ->
       (
-        ("color" -> options.lineColor.map(ColorWriter.toJson _)) ~
+        ("color" -> options.lineColor.map(ColorWriter.toJson)) ~
         ("width" -> options.lineWidth)
       )
     )
   }
 
   private def lineOptionsToJson(options: LineOptions): JObject = {
-    ("color" -> options.color.map(ColorWriter.toJson _)) ~
+    ("color" -> options.color.map(ColorWriter.toJson)) ~
     ("width" -> options.width) ~
     ("dash" -> options.dashMode.map { _.toString})
   }
@@ -58,7 +57,7 @@ object OptionsWriter {
     text match {
       case Some(StringText(s)) => ("text" -> s)
       case Some(SrcText(s)) => ("textsrc" -> s)
-      case Some(IterableText(v)) =>
+      case Some(IterableText(_)) =>
         throw new IllegalStateException("No")
         // Should not happen at this stage
         // text series are replaced by textSrc in PlotWriter

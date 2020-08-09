@@ -32,7 +32,6 @@ object SeriesWriter {
     ("xsrc" -> xsrc) ~
       ("ysrc" -> ysrc) ~
       ("type" -> "scattermapbox") ~
-      axisToJson(info.axisIndex) ~
       OptionsWriter.scatterOptionsToJson(info.series.options.asInstanceOf[ScatterOptions])
   }
 

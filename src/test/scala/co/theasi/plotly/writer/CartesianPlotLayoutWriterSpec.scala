@@ -1,14 +1,11 @@
 package co.theasi.plotly.writer
 
-import org.scalatest._
-
+import co.theasi.plotly.{AxisOptions, CartesianPlot, ViewPort}
 import org.json4s._
-import org.json4s.native.JsonMethods._
-import org.json4s.JsonDSL._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import co.theasi.plotly.{ViewPort, CartesianPlot, AxisOptions}
-
-class CartesianPlotLayoutWriterSpec extends FlatSpec with Matchers {
+class CartesianPlotLayoutWriterSpec extends AnyFlatSpec with Matchers {
 
   val defaultViewPort = ViewPort((0.0, 0.5), (0.1, 0.6))
 

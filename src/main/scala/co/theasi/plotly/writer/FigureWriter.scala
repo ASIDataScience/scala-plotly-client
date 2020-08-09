@@ -34,10 +34,8 @@ object FigureWriter {
     val layoutFragments = for {
       (index, viewPort, plot) <- (plotIndices, figure.viewPorts, figure.plots).zipped
       fragment = plot match {
-        case p: CartesianPlot =>
-          CartesianPlotLayoutWriter.toJson(index, viewPort, p)
-        case p: ThreeDPlot =>
-          ThreeDPlotLayoutWriter.toJson(index, viewPort, p)
+        case p: CartesianPlot => CartesianPlotLayoutWriter.toJson(index, viewPort, p)
+        case p: ThreeDPlot => ThreeDPlotLayoutWriter.toJson(index, viewPort, p)
       }
     } yield fragment
 
@@ -77,6 +75,7 @@ object FigureWriter {
 
     val dataColumns = series match {
       case s: CartesianSeries2D[_, _] => List(s"x-$index" -> s.xs, s"y-$index" -> s.ys)
+      case s: CartesianSeriesGeo[_, _] => List(s"lon-$index" -> s.lons, s"lat-$index" -> s.lats)
       case s: CartesianSeries1D[_] => List(s"x-$index" -> s.xs)
       case s: SurfaceZ[_] =>
         s.zs.transpose.zipWithIndex.map { case (row, rowIndex) =>
@@ -140,11 +139,10 @@ object FigureWriter {
     }
 
   private def srcsFromDrawnGrid(drawnGrid: GridFile,
-                                 series: Series,
-                                 index: Int
-                               ): List[String] = {
+                                series: Series,
+                                index: Int): List[String] = {
     val srcs = series match {
-      case s: Scatter3D[_, _, _] =>
+      case _: Scatter3D[_, _, _] =>
         val xName = s"x-$index"
         val yName = s"y-$index"
         val zName = s"z-$index"
@@ -155,7 +153,15 @@ object FigureWriter {
         val ysrc = s"${drawnGrid.fileId}:$yuid"
         val zsrc = s"${drawnGrid.fileId}:$zuid"
         List(xsrc, ysrc, zsrc)
-      case s: CartesianSeries2D[_, _] =>
+      case _: CartesianSeriesGeo[_, _] =>
+        val xName = s"lon-$index"
+        val yName = s"lat-$index"
+        val xuid = drawnGrid.columnUids(xName)
+        val yuid = drawnGrid.columnUids(yName)
+        val xsrc = s"${drawnGrid.fileId}:$xuid"
+        val ysrc = s"${drawnGrid.fileId}:$yuid"
+        List(xsrc, ysrc)
+      case _: CartesianSeries2D[_, _] =>
         val xName = s"x-$index"
         val yName = s"y-$index"
         val xuid = drawnGrid.columnUids(xName)
@@ -163,7 +169,7 @@ object FigureWriter {
         val xsrc = s"${drawnGrid.fileId}:$xuid"
         val ysrc = s"${drawnGrid.fileId}:$yuid"
         List(xsrc, ysrc)
-      case s: CartesianSeries1D[_] =>
+      case _: CartesianSeries1D[_] =>
         val xName = s"x-$index"
         val xuid = drawnGrid.columnUids(xName)
         val xsrc = s"${drawnGrid.fileId}:$xuid"
