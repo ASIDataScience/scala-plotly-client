@@ -10,8 +10,7 @@ object CartesianPlotLayoutWriter {
   def toJson(
     axisIndex: Int,
     viewPort: ViewPort,
-    plot: CartesianPlot)
-  : JObject = {
+    plot: CartesianPlot): JObject = {
     val xAxis = axisToJson(axisIndex, viewPort.xDomain, "xaxis", "y", plot.options.xAxis.options)
     val yAxis = axisToJson(axisIndex, viewPort.yDomain, "yaxis", "x", plot.options.yAxis.options)
 
@@ -23,8 +22,7 @@ object CartesianPlotLayoutWriter {
     domain: (Double, Double),
     radix: String,
     anchorRadix: String,
-    options: AxisOptions)
-  : JObject = {
+    options: AxisOptions): JObject = {
     val indexString = (if(axisIndex == 1) "" else axisIndex.toString)
     val label = radix + indexString
     val (start, end) = domain

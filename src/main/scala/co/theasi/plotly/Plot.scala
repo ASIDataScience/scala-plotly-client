@@ -13,7 +13,11 @@ object Plot {
 }
 
 case class GeoCartesianPlot(series: Vector[Series],
-                            options: CartesianPlotOptions) extends Plot {
+                            options: CartesianPlotOptions,
+                            centerLat: Double,
+                            centerLon: Double,
+                            zoom: Double,
+                            token: Option[String] = None) extends Plot {
   type OptionType = CartesianPlotOptions
 }
 

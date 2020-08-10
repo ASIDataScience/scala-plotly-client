@@ -36,6 +36,7 @@ object FigureWriter {
       fragment = plot match {
         case p: CartesianPlot => CartesianPlotLayoutWriter.toJson(index, viewPort, p)
         case p: ThreeDPlot => ThreeDPlotLayoutWriter.toJson(index, viewPort, p)
+        case p: GeoCartesianPlot => GeoLayoutWriter.toJson(p)
         case _ => JObject()
       }
     } yield fragment

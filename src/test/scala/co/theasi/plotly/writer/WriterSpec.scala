@@ -1,6 +1,7 @@
 package co.theasi.plotly.writer
 
 import co.theasi.plotly._
+import co.theasi.plotly.testing.tags.Slow
 import org.json4s._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
