@@ -20,7 +20,7 @@ publishMavenStyle := true
 
 // Publishing
 publishTo := {
-  val nexus = "https://oss.sonatype.org/"
+  val nexus = "https://maven.pkg.github.com/tnyz"
   if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
