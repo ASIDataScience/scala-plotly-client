@@ -11,7 +11,7 @@
 
  - [API documentation](http://asidatascience.github.io/scala-plotly-client/latest/api/#co.theasi.plotly.package).
 
-## Authentication
+## Authentication
 
 To create a graph on Plotly, start by opening an account with the web UI. Then create an API key by clicking on your username in the top right hand corner of the screen and selecting *SETTINGS > API KEYS*. Create the file `~/.plotly/.credentials` in your home directory. The file should look like:
 
@@ -24,7 +24,7 @@ To create a graph on Plotly, start by opening an account with the web UI. Then c
 
 Note that if you have already used another Plotly client, you probably do not need to do this.
 
-## Your first graph
+## Your first graph
 
 To create a graph on the Plotly servers, start by importing the client:
 
@@ -47,7 +47,7 @@ PlotFile = PlotFile(pbugnion:264,hello-plotly)
 
 This will create a graph called `hello-plotly` in your account!
 
-## Using custom credentials
+## Using custom credentials
 
 Sometimes, creating a `~/.plotly/.credentials` file isn't practical. In that case, you can pass credentials to Plotly programatically by defining a custom server.
 
