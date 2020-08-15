@@ -1,22 +1,9 @@
-[![Build Status](https://travis-ci.org/ASIDataScience/scala-plotly-client.svg)](https://travis-ci.org/ASIDataScience/scala-plotly-client)
-
 # Plotly client
 
-## Installation
 
-To add the plotly client to your code, add the following lines to your `build.sbt`:
+## Installation
+`sbt publishLocal`
 
-```scala
-libraryDependencies += "co.theasi" %% "plotly" % "0.2.0"
-```
-
-To install the bleeding edge version, add this instead:
-
-```scala
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-
-libraryDependencies += "co.theasi" %% "plotly" % "0.2.1-SNAPSHOT"
-```
 
 ## Documentation
 
